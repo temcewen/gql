@@ -460,9 +460,13 @@ class TransportWsClientOptions {
   final GraphQLSocketMessageDecoder graphQLSocketMessageDecoder;
 
   /// The default [graphQLSocketMessageDecoder] that decodes the request message from a json string.
-  static Map<String, dynamic>? defaultGraphQLSocketMessageDecoder(
-          dynamic message) =>
-      jsonDecode(message as String) as Map<String, dynamic>?;
+  FutureOr<Map<String, dynamic>>? defaultGraphQLSocketMessageDecoder(dynamic message) {
+    Map<String, dynamic>? value = jsonDecode(message as String) as Map<String, dynamic>?;
+    if (value == null) {
+      return null;
+    }
+    return value;
+  }
 
   /// A function that logs events within the execution of the [TransportWsClient].
   /// Useful for debugging.
